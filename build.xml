@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Adjective Chess" default="compile">
+
+  <basename property="project" file="${basedir}"/>
+
+  <property name="app.src" location="src"/>
+
+  <property name="app.build" location="build"/>
+  <property name="build.classes" location="${app.build}/classes"/>
+  <property name="build.jar" location="${app.build}/${project}.jar"/>
+
+  <path id="class.path">
+    <fileset dir="lib">
+      <include name="**/*.jar"/>
+      <include name="**/*.zip"/>
+    </fileset>
+  </path>
+
+  <target name="init">
+    <mkdir dir="build/classes"/>
+  </target>
+  
+  <path id="compile.classpath">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+  
+  <target name="compile" depends="init" >
+    <javac srcdir="${app.src}" destdir="build/classes" debug="true" includeantruntime="true">
+      <classpath refid="compile.classpath"/>
+    </javac>
+  </target>
+
+  <manifest file="build/MANIFEST.MF">
+    <attribute name="Main-Class"
+               value="dtadams.${project}.Main" />
+  </manifest>
+
+  <target name="jar" depends="compile">
+    <jar destfile="${build.jar}"
+         basedir="${build.classes}"
+         includes="**/*.class"
+         manifest="build/MANIFEST.MF"/>
+  </target>
+
+  <target name="unit" depends="jar">
+    <junit>
+      <classpath refid="class.path"/>
+      <classpath>
+        <pathelement location="${build.jar}"/>
+      </classpath>
+      <formatter type="brief" usefile="false"/>
+      <sysproperty key="java.awt.headless" value="true"/>
+      <test name="${testcase}" if="testcase"/>
+      <batchtest unless="testcase">
+        <fileset dir="${build.classes}" includes="**/*Test.class"/>
+      </batchtest>
+    </junit>
+  </target>
+  
+  <target name="clean">
+    <delete dir="build"/>
+    <mkdir dir="build/classes"/>
+  </target>
+
+</project>

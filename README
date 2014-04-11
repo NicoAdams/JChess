@@ -1,0 +1,25 @@
+
+Chess piece art
+http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_rook.png
+
+/* TO DO
+ * ---------------
+ * 
+ * Pieces
+ * - Fix check conditions (not limiting piece movements) 
+ * - Fix checkmate conditions (accounts only for king)
+ * - Fix castling conditions
+ * - Fix En Passent rules
+ * - Enable pawn promotion
+ *
+ * Display
+ * - Extract ChessBoard display class from ChessPanel class
+ * - Fix flash effect upon mouse entering board area
+ * - Add captured pieces display
+ *
+ * Game
+ * - Extract GameLogic class from Board class
+ * - Return list of moves instead of positions for full generality
+ */
+
+ This is not really a readme yet.
