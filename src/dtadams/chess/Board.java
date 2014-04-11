@@ -177,10 +177,19 @@ public class Board {
 	}
 
 	public boolean inCheckmate(PieceColor color) {
-		Position kingPos = locatePiece(PieceType.KING, color).get(0);
-		Piece king = getPiece(kingPos);
+		for(int row=1; row<=rows; row++)
+		for(int col=1; col<=cols; col++) {
+			Position pos = new Position(row, col);
+			Piece piece = getPiece(pos);
+			if(piece.getColor() == color) {
+				for(Position movePos: piece.getMoveList(pos, this)) {
+					Board newBoard = this.move(piece.copy().move(pos, movePos, this));
+					if(!newBoard.inCheck(color)) return false; 
+				}
+			}
+		}
 
-		return king.getMoveList(kingPos, this).size() == 0 && inCheck(color);
+		return true;
 	}
 
 

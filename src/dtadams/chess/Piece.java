@@ -56,11 +56,13 @@ public abstract class Piece {
 			move = new MoveCapture(current, movePos, movePos, MoveType.NORMAL);
 		} else move = new Move(current, movePos, MoveType.NORMAL);
 
+		onMove(current, movePos, b);
+
 		return move;
 	}
 
 	// Called on Piece moved
-	protected void onMove(Position current, Position move, Board b) {}
+	protected void onMove(Position current, Position movePos, Board b) {}
 
 	// Called at the beginning of each turn
 	public void onTurn(Board b) {}
@@ -69,11 +71,11 @@ public abstract class Piece {
 		ArrayList<Position> moveList = getMoveListIgnoreCheck(current, b);
 		ArrayList<Position> newMoveList = new ArrayList<>();
 		for(Position move: moveList) {
-			Board newBoard = b.move(this.move(current, move, b));
+			Board newBoard = b.move(this.copy().move(current, move, b));
 			if(!newBoard.inCheck(this.color)) newMoveList.add(move);
 		}
 
-		return moveList;
+		return newMoveList;
 	}
 
 	public abstract ArrayList<Position> getMoveListIgnoreCheck(Position current, Board b);

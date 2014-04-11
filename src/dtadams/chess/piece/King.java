@@ -9,16 +9,21 @@ public class King extends Piece {
 
 	public King(PieceColor _color) {
 		super(PieceType.KING, _color, false);
-		hasMoved = false;
+		this.hasMoved = false;
 	}
 
 	King(PieceColor _color, boolean _hasMoved) {
 		super(PieceType.KING, _color, false);
-		hasMoved = _hasMoved;
+		this.hasMoved = _hasMoved;
 	}
 
-	public void onMove(Board b) {
-		hasMoved = true;
+	protected void onMove(Position current, Position movePos, Board b) {
+		System.out.println("King.onMove()");
+		this.hasMoved = true;
+	}
+
+	public boolean hasMoved() {
+		return this.hasMoved;
 	}
 
 	public ArrayList<Position> getMoveListIgnoreCheck(Position current, Board b) {
@@ -35,26 +40,19 @@ public class King extends Piece {
 
 		// Castling
 
-		if(!hasMoved) {
+		if(!this.hasMoved) {
 
-			for(int row=1; row<=b.getRows(); row++)
-			for(int col=1; col<=b.getCols(); col++) {
-				Position pos = new Position(row, col);
-				Piece piece = b.getPiece(pos);
+			ArrayList<Position> rookPositions = b.locatePiece(PieceType.ROOK, color);
+			for(Position rookPos: rookPositions) {
 
-				if(piece.getType() == PieceType.ROOK
-				&& ((Rook)piece).canCastle()) {
-					
-					// TODO implement further check rules
-
-					if(canCastle(current, pos, b)) {
-						if(pos.col > current.col) {
-							//Kingside castle
-							moveList.add(new Position(current.row, current.col+2));
-						} else {
-							//Queenside castle
-							moveList.add(new Position(current.row, current.col-2));
-						}
+				Rook rook = (Rook) b.getPiece(rookPos);
+				if(this.canCastle(current, rookPos, b, rook)) {
+					if(rookPos.col > current.col) {
+						//Kingside castle
+						moveList.add(new Position(current.row, current.col+2));
+					} else {
+						//Queenside castle
+						moveList.add(new Position(current.row, current.col-2));
 					}
 				}
 			}
@@ -76,7 +74,8 @@ public class King extends Piece {
 		return super.move(current, move, b);
 	}
 
-	boolean canCastle(Position current, Position pos, Board b) {
+	boolean canCastle(Position current, Position pos, Board b, Rook rook) {
+		if(!rook.canCastle()) return false;
 		if(current.row != pos.row) return false;
 		if(current.equals(pos)) return false;
 

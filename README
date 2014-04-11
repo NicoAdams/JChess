@@ -1,25 +1,18 @@
 
-Chess piece art
-http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_rook.png
+Chess piece art credit http://www.wpclipart.com/recreation/games/chess/chess_set_1
 
-/* TO DO
- * ---------------
- * 
- * Pieces
- * - Fix check conditions (not limiting piece movements) 
- * - Fix checkmate conditions (accounts only for king)
- * - Fix castling conditions
- * - Fix En Passent rules
- * - Enable pawn promotion
- *
- * Display
- * - Extract ChessBoard display class from ChessPanel class
- * - Fix flash effect upon mouse entering board area
- * - Add captured pieces display
- *
- * Game
- * - Extract GameLogic class from Board class
- * - Return list of moves instead of positions for full generality
- */
+Known Bugs
+----------
 
- This is not really a readme yet.
+- King can castle out of and through check
+- Pawns cannot En Passent
+- Pawn promotion not enabled
+- Fix flash effect upon mouse entering board area
+
+Enhancements
+------------
+
+- Extract ChessBoard display class from ChessPanel class
+- Add captured pieces display
+- Extract GameLogic class from Board class
+- Return list of moves instead of positions for full generality
