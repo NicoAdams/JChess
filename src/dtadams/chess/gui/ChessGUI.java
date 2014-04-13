@@ -1,4 +1,4 @@
-package dtadams.gui;
+package dtadams.chess.gui;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -31,23 +31,25 @@ public class ChessGUI extends Frame {
 
 	public Move getMove(PieceColor color) {
 
-		cp.setCurrentPlayer(color);
+		ChessBoard cb = cp.getBoard();
+		cb.setCurrentPlayer(color);
+		cb.setView(color);
 		
-		while(cp.getMove() == null) {
+		while(cb.getMove() == null) {
 			try {
-				synchronized(cp) {
-					cp.wait();
+				synchronized(cb) {
+					cb.wait();
 				}
 			} catch (InterruptedException e) {}
 		}
-		Move move = cp.getMove();
+		Move move = cb.getMove();
 
-		cp.resetMove();
-		cp.setCurrentPlayer(PieceColor.NONE);
+		cb.resetMove();
+		cb.setCurrentPlayer(PieceColor.NONE);
 		return move;
 	}
 
 	public void update(Board _b) {
-		cp.update(_b);
+		cp.getBoard().update(_b);
 	}
 }

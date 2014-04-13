@@ -1,4 +1,4 @@
-package dtadams.gui;
+package dtadams.chess.gui;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,29 +1,9 @@
 package dtadams.chess;
 
-import dtadams.gui.ChessGUI;
-import dtadams.gui.GUIGame;
-import dtadams.gui.GUIPlayer;
-import dtadams.gui.AdjectiveGenerator;
-
-/* TO DO
- * ---------------
- * 
- * Pieces
- * - Fix check conditions (not limiting piece movements) 
- * - Fix checkmate conditions (accounts only for king)
- * - Fix castling conditions
- * - Fix En Passent rules
- * - Enable pawn promotion
- *
- * Display
- * - Extract ChessBoard display class from ChessPanel class
- * - Fix flash effect upon mouse entering board area
- * - Add captured pieces display
- *
- * Game
- * - Extract GameLogic class from Board class
- * - Return list of moves instead of positions for full generality
- */
+import dtadams.chess.gui.ChessGUI;
+import dtadams.chess.gui.GUIGame;
+import dtadams.chess.gui.GUIPlayer;
+import dtadams.chess.gui.AdjectiveGenerator;
 
 public class Main {
 	public static void main(String[] args) {
@@ -40,8 +20,8 @@ public class Main {
 		Player otherPlayer = black;
 		
 		Game game = new GUIGame(white, black, gui);
-		game.play();
+		PieceColor winner = game.play();
 
-		System.out.println("YOLO #wooooot");
+		System.out.println("Winner: "+winner);
 	}
 }

@@ -1,4 +1,4 @@
-package dtadams.gui;
+package dtadams.chess.gui;
 
 import dtadams.chess.Board;
 import dtadams.chess.Move;

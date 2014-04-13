@@ -13,7 +13,7 @@ public abstract class Game {
 		this.black = _black;
 	}
 
-	public void play() {
+	public PieceColor play() {
 		b = new Board();
 		this.currentColor = PieceColor.WHITE;
 		this.oppositeColor = PieceColor.BLACK;
@@ -22,6 +22,8 @@ public abstract class Game {
 			playTurn();
 			display(b);
 		}
+
+		return oppositeColor; // The winner
 	}
 
 	void playTurn() {

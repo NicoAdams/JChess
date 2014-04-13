@@ -2,6 +2,7 @@ package dtadams.chess;
 
 import dtadams.chess.piece.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Board {
 	
@@ -79,6 +80,31 @@ public class Board {
 		}
 
 		return locations;
+	}
+
+	public Iterator<Position> getIterator() {		
+		Board currentBoard = this;
+
+		return new Iterator<Position>() {
+			Position current = new Position(1, 1);
+
+			Position virtualNext() {
+				Position nextPos = new Position(current.row, current.col + 1);
+				if(!currentBoard.onBoard(nextPos))
+					nextPos = new Position(current.row + 1, 1);
+				return nextPos;
+			}
+
+			public Position next() {
+				Position last = current.copy();
+				current = virtualNext();
+				return last;
+			}
+
+			public boolean hasNext() {
+				return currentBoard.onBoard(current);
+			}
+		};
 	}
 
 	public Board copy() {
