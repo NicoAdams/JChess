@@ -8,13 +8,13 @@ public abstract class Game {
 	PieceColor currentColor, oppositeColor;
 	Board b;
 
-	public Game(Player _white, Player _black) {
+	public Game(Player _white, Player _black, Board _b) {
 		this.white = _white;
 		this.black = _black;
+		this.b = _b;
 	}
 
 	public PieceColor play() {
-		b = new Board();
 		this.currentColor = PieceColor.WHITE;
 		this.oppositeColor = PieceColor.BLACK;
 

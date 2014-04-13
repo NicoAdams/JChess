@@ -6,8 +6,8 @@ public class GUIGame extends Game {
 
 	ChessGUI gui;
 
-	public GUIGame(Player white, Player black, ChessGUI _gui) {
-		super(white, black);
+	public GUIGame(Player _white, Player _black, Board _b, ChessGUI _gui) {
+		super(_white, _black, _b);
 		this.gui = _gui;
 	}
 

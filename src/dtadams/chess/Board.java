@@ -10,20 +10,31 @@ public class Board {
 	int cols;
 	Piece[][] pieces;
 
-	public Board() {
+	public enum Setup {
+		NORMAL, MONK;
+	}
+
+	public Board(Setup setup) {
 
 		PieceColor w = PieceColor.WHITE;
 		PieceColor b = PieceColor.BLACK;
 
+		Piece whiteCornerPiece = (setup == Setup.NORMAL
+									? new Rook(w)
+									: new Monk(w));
+		Piece blackCornerPiece = (setup == Setup.NORMAL
+									? new Rook(b)
+									: new Monk(b));
+
 		Piece[][] _pieces = new Piece[][]{
-			new Piece[]{new Rook(w), new Knight(w), new Bishop(w), new Queen(w), new King(w), new Bishop(w), new Knight(w), new Rook(w)},
+			new Piece[]{whiteCornerPiece, new Knight(w), new Bishop(w), new Queen(w), new King(w), new Bishop(w), new Knight(w), whiteCornerPiece},
 			new Piece[]{new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w)},
 			new Piece[]{new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece()},
 			new Piece[]{new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece()},
 			new Piece[]{new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece()},
 			new Piece[]{new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece()},
 			new Piece[]{new Pawn(b), new Pawn(b), new Pawn(b), new Pawn(b), new Pawn(b), new Pawn(b), new Pawn(b), new Pawn(b)},
-			new Piece[]{new Rook(b), new Knight(b), new Bishop(b), new Queen(b), new King(b), new Bishop(b), new Knight(b), new Rook(b)},
+			new Piece[]{blackCornerPiece, new Knight(b), new Bishop(b), new Queen(b), new King(b), new Bishop(b), new Knight(b), blackCornerPiece},
 		};
 
 		this.rows = _pieces.length;
