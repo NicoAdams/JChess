@@ -4,7 +4,9 @@ import java.io.InputStreamReader;
 
 public class HumanPlayer extends Player {
 
-	public HumanPlayer() {}
+	public HumanPlayer(PieceColor _color) {
+		super(_color);
+	}
 
 	public Move move(Board b) {
 		

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Pawn extends Piece {
 	
-	boolean canEnPassent = false;
+	boolean canEnPassent;
 
 	public Pawn(PieceColor _color) {
 		super(PieceType.PAWN, _color, false);
@@ -22,7 +22,13 @@ public class Pawn extends Piece {
 	}
 
 	public void onTurn(Board b) {
-		canEnPassent = false;
+		this.canEnPassent = false;
+	}
+	
+	public void onMove(Position current, Position movePos, Board b) {
+		if(Math.abs(movePos.row - current.row) == 2) {
+			this.canEnPassent = true;
+		}
 	}
 
 	public Move move(Position current, Position move, Board b) {
@@ -74,6 +80,19 @@ public class Pawn extends Piece {
 										Mover.Type.SINGLE,
 										Mover.Capture.ONLY));
 
+		// En Passent capture
+		for(int i=0; i<rowDeltas.length; i++) {
+			if(canEnPassentCapture(current, rowDeltas[i], colDeltas[i], b)) {
+				moveList.addAll(Mover.getMoves(current,
+												b,
+												new int[]{rowDeltas[i]},
+												new int[]{colDeltas[i]},
+												color,
+												Mover.Type.SINGLE,
+												Mover.Capture.OFF));
+			}
+		}
+
 		// Advancing the pawn
 		if((rowDelta == 1 && current.row == 2
 			|| rowDelta == -1 && current.row == b.getRows()-1)
@@ -92,6 +111,19 @@ public class Pawn extends Piece {
 		return moveList;
 	}
 
+	boolean canEnPassentCapture(Position current, int rowDelta, int colDelta, Board b) {
+		int rowDeltaCheck = 0;
+		Position checkPos = new Position(current.row + rowDeltaCheck, current.col + colDelta);
+
+		if(b.onBoard(checkPos)) {
+			Piece piece = b.getPiece(checkPos);
+			if(piece.getType() == PieceType.PAWN
+			&& ((Pawn)piece).canEnPassent())
+
+				return true;
+		}
+		return false;
+	}
 
 	public Piece copy() {
 		return new Pawn(color, canEnPassent);

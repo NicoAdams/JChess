@@ -25,15 +25,8 @@ public abstract class Game {
 	}
 
 	void playTurn() {
-		b.onTurn(currentColor);
-
-		if(b.inCheck(currentColor))
-			System.out.println("Check");
-
 		Player toMove = (currentColor == PieceColor.WHITE ? white : black);
 		Move move = toMove.move(b);
-
-		System.out.println(move);
 
 		b = b.move(move);
 

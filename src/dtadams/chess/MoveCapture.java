@@ -13,8 +13,4 @@ public class MoveCapture extends Move {
 	public Position capture() {
 		return capture;
 	}
-
-	public String toString() {
-		return super.toString()+"("+capture+")";
-	}
 }

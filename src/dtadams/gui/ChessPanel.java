@@ -189,9 +189,6 @@ public class ChessPanel
 			&& piece.getColor() == this.currentPlayer) {
 				this.selectedPiece = b.getPiece(clickPosition);
 				this.selectedPiecePosition = clickPosition;
-
-				if(selectedPiece.getType() == PieceType.KING)
-					System.out.println( ((King)selectedPiece).hasMoved());
 			}
 		} else {
 			// Attempts to move the selected piece

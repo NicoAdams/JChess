@@ -89,7 +89,8 @@ public class Board {
 			piecesCopy[row][col] = pieces[row][col].copy();
 		}
 
-		return new Board(piecesCopy);
+		Board b = new Board(piecesCopy);
+		return b;
 	}
 
 	public Move getMove(Position from, Position to)
@@ -107,11 +108,15 @@ public class Board {
 		// Creates a board copy
 		Board b = this.copy();
 
+		// Gets the move data
 		Position current = move.current();
 		Position movePos = move.move();
-
-		// Removes the old piece
 		Piece piece = b.getPiece(current).copy();
+
+		// Performs the onTurn update
+		this.onTurn(piece.getColor());
+ 
+		// Removes the old piece
 		b.setPiece(current, new NonePiece());
 
 		// Handles piece capture
@@ -138,6 +143,9 @@ public class Board {
 		// Adds the new piece
 		b.setPiece(movePos, piece);
 
+		// Performs the onMove update on the new piece
+		piece.onMove(current, movePos, this);
+
 		return b;
 	}
 
@@ -146,7 +154,10 @@ public class Board {
 		for(int row=1; row<=rows; row++)
 		for(int col=1; col<=cols; col++) {
 			Position pos = new Position(row, col);
-			getPiece(pos).onTurn(this);
+			Piece piece = getPiece(pos);
+			if(piece.getColor() == color) {
+				piece.onTurn(this);
+			}
 		}
 	}
 
@@ -191,7 +202,6 @@ public class Board {
 
 		return true;
 	}
-
 
 	public boolean canMove(PieceColor color) {
 		for(int row=1; row<=rows; row++)

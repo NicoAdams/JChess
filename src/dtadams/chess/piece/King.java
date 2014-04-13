@@ -18,7 +18,6 @@ public class King extends Piece {
 	}
 
 	protected void onMove(Position current, Position movePos, Board b) {
-		System.out.println("King.onMove()");
 		this.hasMoved = true;
 	}
 
@@ -39,6 +38,7 @@ public class King extends Piece {
 														Mover.Capture.ALLOWED);
 
 		// Castling
+		// KEY TO SOLVING CASTLING CHECK CHECKING: Move this to getMoveList
 
 		if(!this.hasMoved) {
 

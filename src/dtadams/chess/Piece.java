@@ -57,7 +57,6 @@ public abstract class Piece {
 		} else move = new Move(current, movePos, MoveType.NORMAL);
 
 		onMove(current, movePos, b);
-
 		return move;
 	}
 
