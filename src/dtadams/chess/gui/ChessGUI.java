@@ -1,37 +1,65 @@
 package dtadams.chess.gui;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
-import java.lang.InterruptedException;
 import dtadams.chess.*;
+import dtadams.chess.piece.*;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javax.imageio.ImageIO;
 
-public class ChessGUI extends Frame {
+public class ChessGUI
+	extends Container {
 
-	ChessPanel cp;
+	int width,
+		height,
+		boardWidth,
+		boardHeight,
+		horzBorder,
+		vertBorder;
 
-	public ChessGUI(String title, Board _b) {
-		super(title);
+	PieceColor view;
+	PieceColor currentPlayer;
 
-		int width = 600;
-		int height = 700;
-		this.setSize(new Dimension(width, height));
-		this.setResizable(false);
+	ChessBoard cb;
 
-		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent we){
-				System.exit(0);
-			}
-		});
+	public ChessGUI(int _width, int _height, int _squareSize, Board _b) {
+		super();
+		setPreferredSize(new Dimension(_width, _height));
 
-		this.cp = new ChessPanel(width, height, 50, _b);
-		this.add(cp);
+		this.width = _width;
+		this.height = _height;
+
+		this.boardWidth = _squareSize * _b.getCols();
+		this.boardHeight = _squareSize * _b.getRows();
+		this.horzBorder = (width - boardWidth) / 2;
+		this.vertBorder = (height - boardHeight) / 2;
+
+		this.view = PieceColor.WHITE;
+		this.currentPlayer = PieceColor.NONE;
+
+		this.cb = new ChessBoard(_squareSize, _b, horzBorder, vertBorder);
+		cb.setBounds(horzBorder, vertBorder, boardWidth, boardHeight);
+		cb.setView(view);
+		cb.setCurrentPlayer(currentPlayer);
+		this.add(cb);
+
+	}
+
+	public ChessBoard getBoard() {
+		return cb;
 	}
 
 	public Move getMove(PieceColor color) {
 
-		ChessBoard cb = cp.getBoard();
 		cb.setCurrentPlayer(color);
 		cb.setView(color);
 		
@@ -49,7 +77,20 @@ public class ChessGUI extends Frame {
 		return move;
 	}
 
-	public void update(Board _b) {
-		cp.getBoard().update(_b);
+	public void update(Board b) {
+		cb.update(b);
+	}
+
+	public void paint(Graphics g0) {
+		Graphics2D g = (Graphics2D)g0;
+
+		g.drawImage(ImageLoader.getBackground(),
+					0,
+					0,
+					width,
+					height,
+					null);
+
+		cb.paint(g);
 	}
 }

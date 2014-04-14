@@ -34,7 +34,7 @@
 
   <manifest file="build/MANIFEST.MF">
     <attribute name="Main-Class"
-               value="dtadams.${project}.Main" />
+               value="dtadams.chess.gui.ChessFrame" />
   </manifest>
 
   <target name="jar" depends="compile">
