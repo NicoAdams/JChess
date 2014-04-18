@@ -9,13 +9,13 @@ public class Board {
 	int rows;
 	int cols;
 	Piece[][] pieces;
+	ArrayList<Piece> capturedPieces;
 
 	public enum Setup {
 		NORMAL, MONK;
 	}
 
-	public Board(Setup setup) {
-
+	static Piece[][] generatePieces(Setup setup) {
 		PieceColor w = PieceColor.WHITE;
 		PieceColor b = PieceColor.BLACK;
 
@@ -26,7 +26,7 @@ public class Board {
 									? new Rook(b)
 									: new Monk(b));
 
-		Piece[][] _pieces = new Piece[][]{
+		Piece[][] pieces = new Piece[][]{
 			new Piece[]{whiteCornerPiece, new Knight(w), new Bishop(w), new Queen(w), new King(w), new Bishop(w), new Knight(w), whiteCornerPiece},
 			new Piece[]{new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w), new Pawn(w)},
 			new Piece[]{new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece(), new NonePiece()},
@@ -37,17 +37,18 @@ public class Board {
 			new Piece[]{blackCornerPiece, new Knight(b), new Bishop(b), new Queen(b), new King(b), new Bishop(b), new Knight(b), blackCornerPiece},
 		};
 
-		this.rows = _pieces.length;
-		this.cols = _pieces[0].length;
+		return pieces;
+	}
 
-		this.pieces = _pieces;
+	public Board(Setup setup) {
+		this(generatePieces(setup));
 	}
 
 	public Board(Piece[][] _pieces) {
 		this.rows = _pieces.length;
 		this.cols = _pieces[0].length;
-
 		this.pieces = _pieces;
+		capturedPieces = new ArrayList<>();
 	}
 
 	public boolean onBoard(Position pos) {
@@ -93,6 +94,18 @@ public class Board {
 		return locations;
 	}
 
+	public ArrayList<Piece> getCapturedPieces() {
+		return capturedPieces;
+	}
+
+	public void setCapturedPieces(ArrayList<Piece> _capturedPieces) {
+		this.capturedPieces = _capturedPieces;
+	}
+
+	public void addCapturedPiece(Piece piece) {
+		capturedPieces.add(piece);
+	}
+
 	public Iterator<Position> getIterator() {		
 		Board currentBoard = this;
 
@@ -127,6 +140,7 @@ public class Board {
 		}
 
 		Board b = new Board(piecesCopy);
+		b.setCapturedPieces(new ArrayList<>(capturedPieces));
 		return b;
 	}
 
@@ -136,6 +150,7 @@ public class Board {
 		Piece toMove = getPiece(from);
 		
 		if(!toMove.canMove(from, to, this)) throw new InvalidMoveException();
+		if(getPiece(to).getType() == PieceType.KING) throw new InvalidMoveException();
 		return toMove.move(from, to, this);
 	}
 
@@ -159,6 +174,7 @@ public class Board {
 		// Handles piece capture
 		if(move.isCapture()) {
 			Position capture = ((MoveCapture) move).capture();
+			b.addCapturedPiece(b.getPiece(capture));
 			b.setPiece(capture, new NonePiece());
 		}
 

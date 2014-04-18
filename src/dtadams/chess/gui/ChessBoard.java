@@ -3,7 +3,6 @@ package dtadams.chess.gui;
 import dtadams.chess.*;
 import dtadams.chess.piece.*;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,9 +12,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.JComponent;
 
 public class ChessBoard
-	extends Container
+	extends JComponent
 	implements MouseListener, MouseMotionListener {
 
 	Board b;
@@ -89,12 +89,12 @@ public class ChessBoard
 			(this.view == PieceColor.WHITE
 			? squareSize * (pos.col - 1)
 			: squareSize * (b.getCols() - pos.col))
-			+ this.horzBorder
+//			+ this.horzBorder
 			,
 			(this.view == PieceColor.WHITE 
 			? squareSize * (b.getRows() - pos.row)
 			: squareSize * (pos.row - 1))
-			+ this.vertBorder
+//			+ this.vertBorder
 		};
 	}
 
@@ -152,7 +152,7 @@ public class ChessBoard
 		this.currentHover = getSquare(x, y);
 	}
 
-	public void paint(Graphics g0) {
+	public void paintComponent(Graphics g0) {
 		Graphics2D g = (Graphics2D)g0;
 
 		Iterator<Position> positions = b.getIterator();

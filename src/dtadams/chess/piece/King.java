@@ -6,23 +6,31 @@ import java.util.ArrayList;
 public class King extends Piece {
 
 	boolean hasMoved;
+	boolean hasCastled;
 
 	public King(PieceColor _color) {
 		super(PieceType.KING, _color, false);
 		this.hasMoved = false;
+		this.hasCastled = false;
 	}
 
-	King(PieceColor _color, boolean _hasMoved) {
+	King(PieceColor _color, boolean _hasMoved, boolean _hasCastled) {
 		super(PieceType.KING, _color, false);
 		this.hasMoved = _hasMoved;
+		this.hasCastled = _hasCastled;
 	}
 
 	protected void onMove(Position current, Position movePos, Board b) {
 		this.hasMoved = true;
+		if(Math.abs(current.col - movePos.col) == 2) this.hasCastled = true;
 	}
 
 	public boolean hasMoved() {
 		return this.hasMoved;
+	}
+
+	public boolean hasCastled() {
+		return this.hasCastled;
 	}
 
 	public ArrayList<Position> getMoveList(Position current, Board b) {
@@ -65,7 +73,7 @@ public class King extends Piece {
 	}
 
 	public Piece copy() {
-		return new King(color, hasMoved);
+		return new King(color, hasMoved, hasCastled);
 	}
 
 	public Move move(Position current, Position move, Board b) {
@@ -81,8 +89,6 @@ public class King extends Piece {
 		if(!rook.canCastle()) return false;
 		if(current.row != pos.row) return false;
 		if(current.equals(pos)) return false;
-
-		// if(b.inCheck(this.getColor())) return false;
 
 		int row = current.row;
 		int delta = (int) Math.signum(pos.col - current.col);

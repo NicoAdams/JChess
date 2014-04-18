@@ -1,14 +1,14 @@
 package dtadams.chess.gui;
 
+import dtadams.chess.*;
+import dtadams.chess.ai.*;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import java.applet.Applet;
 import java.lang.InterruptedException;
-import dtadams.chess.*;
+import javax.swing.JFrame;
 
-public class ChessFrame extends Frame {
+public class ChessFrame extends JFrame {
 
 	ChessGUI cp;
 
@@ -16,7 +16,7 @@ public class ChessFrame extends Frame {
 		int width = 600;
 		int height = 700;
 		int squareSize = 50;
-		Board b = new Board(Board.Setup.MONK);
+		Board b = new Board(Board.Setup.NORMAL);
 
 		ChessGUI gui = new ChessGUI(width, height, squareSize, b);
 		ChessFrame frame = new ChessFrame(AdjectiveGenerator.random()+" CHESS - a Dominic Adams production",
@@ -25,8 +25,14 @@ public class ChessFrame extends Frame {
 											gui);
 		frame.setVisible(true);
 
-		GUIPlayer white = new GUIPlayer(PieceColor.WHITE, gui);
-		GUIPlayer black = new GUIPlayer(PieceColor.BLACK, gui);
+		String aiDataDir = "lib/aidata/";
+		String aiDataFile = "1.txt"; // "2.txt";
+		int recurDepth = 2;
+
+		Player white = new GUIPlayer(PieceColor.WHITE, gui);
+		AIPlayer black = new AIPlayer(PieceColor.BLACK,
+										recurDepth,
+										new AIStrategy(new AIDataParser(aiDataDir + aiDataFile)));
 
 		Game game = new GUIGame(white, black, b, gui);
 		PieceColor winner = game.play();

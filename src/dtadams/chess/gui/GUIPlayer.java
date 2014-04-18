@@ -5,7 +5,6 @@ import dtadams.chess.Move;
 import dtadams.chess.Player;
 import dtadams.chess.PieceColor;
 
-
 public class GUIPlayer extends Player {
 
 	ChessGUI g;

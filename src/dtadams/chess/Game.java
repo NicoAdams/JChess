@@ -5,7 +5,7 @@ package dtadams.chess;
 public abstract class Game {
 
 	Player white, black;
-	PieceColor currentColor, oppositeColor;
+	PieceColor currentColor;
 	Board b;
 
 	public Game(Player _white, Player _black, Board _b) {
@@ -16,25 +16,21 @@ public abstract class Game {
 
 	public PieceColor play() {
 		this.currentColor = PieceColor.WHITE;
-		this.oppositeColor = PieceColor.BLACK;
 
 		while(!b.inCheckmate(currentColor)) {
 			playTurn();
 			display(b);
 		}
 
-		return oppositeColor; // The winner
+		return PieceColor.opposite(currentColor); // The winner
 	}
 
-	void playTurn() {
+	protected void playTurn() {
 		Player toMove = (currentColor == PieceColor.WHITE ? white : black);
 		Move move = toMove.move(b);
-
 		b = b.move(move);
 
-		PieceColor tempColor = currentColor;
-		currentColor = oppositeColor;
-		oppositeColor = tempColor;
+		currentColor = PieceColor.opposite(currentColor);
 	}
 
 	protected void display(Board b) {}

@@ -3,7 +3,7 @@ package dtadams.chess.gui;
 import dtadams.chess.*;
 import dtadams.chess.piece.*;
 import java.awt.Color;
-import java.awt.Container;
+import javax.swing.JComponent;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class ChessGUI
-	extends Container {
+	extends JComponent {
 
 	int width,
 		height,
@@ -52,6 +52,7 @@ public class ChessGUI
 		cb.setCurrentPlayer(currentPlayer);
 		this.add(cb);
 
+		repaint();
 	}
 
 	public ChessBoard getBoard() {
@@ -81,7 +82,7 @@ public class ChessGUI
 		cb.update(b);
 	}
 
-	public void paint(Graphics g0) {
+	public void paintComponent(Graphics g0) {
 		Graphics2D g = (Graphics2D)g0;
 
 		g.drawImage(ImageLoader.getBackground(),
@@ -90,7 +91,5 @@ public class ChessGUI
 					width,
 					height,
 					null);
-
-		cb.paint(g);
 	}
 }
